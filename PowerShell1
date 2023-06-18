@@ -1,4 +1,4 @@
-//Simples script com retorno booleano para saber se um host está ou não online.
+#Simples script com retorno booleano para saber se um host está ou não online.
 
 $listcomputers = Get-Content C:\Users\renan\Desktop\var.txt
 ForEach($computers in $listcomputers) {
