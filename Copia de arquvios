@@ -1,0 +1,13 @@
+#Script Criado para ser usado na empresa que trabalho, para bkp da pasta de uso dos clientes.
+
+$origem = Read-Host "nome da pasta de origem (após o prefixo D:\):"
+ $origemCompleta = "D:\$origem"
+ $destino = "F:\Backup\$origem"
+
+ $extensoesExcluidas = @(".xml", ".pdf", ".jpg", ".txt", ".lck", ".log")
+ if (!(Test-Path -Path $destino)) {
+     New-Item -ItemType Directory -Path $destino | Out-Null
+ }
+ Copy-Item -Path $origemCompleta -Destination $destino -Recurse -Exclude $extensoesExcluidas
+
+ Write-Host "Copia Finalizada"
