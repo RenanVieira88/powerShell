@@ -1,0 +1,15 @@
+$listcomputers = Get-Content C:\Users\renan\Desktop\var.txt
+ForEach($computers in $listcomputers) {
+
+$test = Test-Connection -ComputerName $computers -Quiet
+    if ($test -eq 'true') {
+    Write-Host "$computer is Online" -ForegroundColor Green
+
+    Get-Process -ComputerName $computers
+
+    }
+    else {
+    
+    Write-Host "$computer is offline" -ForegroundColor Red
+    
+    }
