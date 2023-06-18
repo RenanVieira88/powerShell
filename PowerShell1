@@ -1,3 +1,5 @@
+//Simples script com retorno booleano para saber se um host está ou não online.
+
 $listcomputers = Get-Content C:\Users\renan\Desktop\var.txt
 ForEach($computers in $listcomputers) {
 
@@ -10,6 +12,6 @@ $test = Test-Connection -ComputerName $computers -Quiet
     }
     else {
     
-    Write-Host "$computer is offline" -ForegroundColor Red
+    Write-Host "$computer is offline" -ForegroundColor Red -BackgroudColor yellow
     
     }
