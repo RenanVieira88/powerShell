@@ -1,14 +1,14 @@
-#Simples script com retorno booleano para saber se um host está ou não online e procurar algumas coisas caso esteja (IF).
+#Simples script com retorno booleano para saber se um host está ou não online e realizar algumas ações.
 
 $listcomputers = Get-Content C:\Users\renan\Desktop\var.txt
 ForEach($computers in $listcomputers) {
 
 $test = Test-Connection -ComputerName $computers -Quiet
     if ($test -eq 'true') {
-    Write-Host "$computer is Online" -ForegroundColor Green
+        Write-Host "$computer is Online" -ForegroundColor Green
         
             #Aqui ele procura nos computadores Online, se há um programa 'Oracle VM VirtualBox 6.1.32"
-    $programas = Get-WmiObjects -ComputersName $computers -NameSpace ROOT\CIMV2 -Class Win32_Product
+        $programas = Get-WmiObjects -ComputersName $computers -NameSpace ROOT\CIMV2 -Class Win32_Product
         if ($programas.Name -wq 'Oracle VM VirtualBox 6.1.32') {
             Write-Host "$computers tem instalado Oracle VM VirtualBox 6.1.32" -ForegroudColor DarkGreen   
 
@@ -19,10 +19,10 @@ $test = Test-Connection -ComputerName $computers -Quiet
               # Pergunta ao usuário se deseja instalar o Oracle VM VirtualBox
             $install = Read-Host "Deseja instalar o Oracle VM VirtualBox em $computer? (S/N)"
             if ($install -eq 'S' -or $install -eq 's') {
-                # Execute o comando de instalação remota aqui
+                # TODO Execute o comando de instalação remota aqui
                 Write-Host "Instalando o Oracle VM VirtualBox em $computer..."
 
-                # Comando de instalação remota do VMware Tools
+                #TODO Comando de instalação remota do VM VirtualBox
             }
             else {
                 Write-Host "Instalação do Oracle VM VirtualBox em $computer cancelada pelo usuário." -ForegroundColor Yellow
