@@ -1,0 +1,28 @@
+#Script para verificação de serviços ativos
+
+$computadores = Get-Content -Path 'C:\Users\senior.rvieira\Desktop\webs.txt'
+$totalServicosEncontrados = 0
+$arquivoSaida = 'C:\Users\senior.rvieira\Desktop\GPNI.txt'
+
+foreach ($computador in $computadores) {
+    $servicos = Get-Service -ComputerName $computador | Where-Object { $_.Status -eq 'Running' -and $_.DisplayName -like '*Nova Interface*' }
+
+    if ($servicos) {
+        Write-Host "Serviços ativos encontrados no computador $computador:"
+        foreach ($servico in $servicos) {
+            Write-Host $servico.DisplayName
+        }
+        Write-Host ""
+        $totalServicosEncontrados += $servicos.Count
+
+        
+        $servicos | Select-Object -ExpandProperty DisplayName | Out-File -Append -FilePath $arquivoSaida
+    } else {
+        Write-Host "Nenhum serviço ativo encontrado no computador $computador."
+    }
+}
+
+
+"Total de serviços ativos encontrados: $totalServicosEncontrados" | Out-File -Append -FilePath $arquivoSaida
+
+Write-Host "Total de serviços ativos encontrados: $totalServicosEncontrados"
