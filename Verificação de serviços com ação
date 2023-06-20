@@ -1,0 +1,34 @@
+# TODO - Definir se sera em lista ou assim como está
+ $server = (Read-Host "Digite o servidor a ser testado:") -split "[, ]+"
+ $service = Read-Host "Digite o nome do serviço a ser validado:"
+
+ # Testar a conexão com o servidor - TODO - caso não tiver conexão solicitar ação... 
+ if (Test-Connection -ComputerName $server -Count 1 -Quiet) {
+     Write-Host "Conexão com o servidor $server OK" -ForegroundColor Green -BackgroundColor Black
+
+     # Obter todos os serviços que correspondem ao nome informado - TODO opção Booleana para os serviços
+     $services = Get-Service -ComputerName $server | Where-Object { $_.Name -like "*$service*" }
+
+     foreach ($s in $services) {
+         # Verificar o status de cada serviço - TODO opção booleana para status
+         if ($s.Status -eq "Running") {
+             Write-Host "O serviço $($s.DisplayName) está ativo." -ForegroundColor Green -BackgroundColor Black
+         } else {
+             # Perguntar ao usuário se deseja ativar o serviço - TODO melhorar acompanhamento - MUDAR COR DO READ-HOST
+             $activate = Read-Host "O serviço $($s.DisplayName) está inativo. Deseja ativá-lo? (S/N)"
+             if ($activate -eq "S" -or $activate -eq "s") {
+                 # Tentar iniciar o serviço
+                 try {
+                     Start-Service -InputObject $s
+                     Write-Host "O serviço $($s.DisplayName) foi ativado com sucesso." -ForegroundColor DarkGreen
+                 } catch {
+                     Write-Host "Não foi possível ativar o serviço $($s.DisplayName). Erro: $($_.Exception.Message)"
+                 }
+             } else {
+                 Write-Host "O serviço $($s.DisplayName) não foi ativado."
+             }
+         }
+     }
+ } else {
+     Write-Host "Não foi possível conectar-se ao servidor $server." -ForegroundColor Red -BackgroundColor Yellow
+ }
